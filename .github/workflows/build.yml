@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_and_analyze:
-    name: Build, Analyze and Test
+    name: Build and Analyze
     runs-on: ubuntu-latest
     
     steps:
@@ -34,8 +34,8 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build and Test
-        run: ./gradlew build test --info
+      - name: Build
+        run: ./gradlew build --info
 
       - name: SonarQube Analysis
         env:
