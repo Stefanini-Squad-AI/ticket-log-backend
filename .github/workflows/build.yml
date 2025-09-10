@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: TICKET-LOG-BACKEND-PIPELINE
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetch all history for accurate analysis
 
@@ -34,8 +34,26 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build
+      # Listar los archivos fuente
+      - name: List source files
+        run: ls -laR src/
+
+      - name: Build Project
         run: ./gradlew build --info
+
+      # Listar directorios y archivos en build/classes
+      - name: List all build/classes folders
+        run: |
+          echo "Directorios en build/classes:"
+          find build/classes -type d -print || echo "No build/classes directory"
+          echo "Archivos en build/classes:"
+          find build/classes -type f -print || echo "No files in build/classes"
+
+      # Listar todos los .class en build/
+      - name: List build output (.class files)
+        run: |
+          echo "Buscando archivos .class en build/ ..."
+          find build/ | grep '\.class$' || echo "No class files found"
 
       - name: SonarQube Analysis
         env:
