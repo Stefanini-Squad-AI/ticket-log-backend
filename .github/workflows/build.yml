@@ -1,0 +1,62 @@
+name: TICKET-LOG-BACKEND-PIPELINE
+
+on:
+  push:
+    branches:
+      - feature/sonarQube
+
+jobs:
+  build_and_analyze:
+    name: Build and Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for accurate analysis
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle  # Enable automatic Gradle caching
+
+      - name: Cache SonarQube packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar-${{ hashFiles('**/*.gradle', '**/sonar-project.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-sonar-
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      # Listar los archivos fuente
+      - name: List source files
+        run: ls -laR src/
+
+      - name: Build Project
+        run: ./gradlew build --info
+
+      # Listar directorios y archivos en build/classes
+      - name: List all build/classes folders
+        run: |
+          echo "Directorios en build/classes:"
+          find build/classes -type d -print || echo "No build/classes directory"
+          echo "Archivos en build/classes:"
+          find build/classes -type f -print || echo "No files in build/classes"
+
+      # Listar todos los .class en build/
+      - name: List build output (.class files)
+        run: |
+          echo "Buscando archivos .class en build/ ..."
+          find build/ | grep '\.class$' || echo "No class files found"
+
+      - name: SonarQube Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TICKET_LOG_BACKEND }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL_TICKET_LOG_BACKEND }}
+        run: ./gradlew sonarqube --info -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY_TICKET_LOG_BACKEND }} -Dsonar.projectName=${{ secrets.SONAR_PROJECT_NAME_TICKET_LOG_BACKEND }}
