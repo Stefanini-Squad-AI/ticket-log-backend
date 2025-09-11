@@ -35,7 +35,7 @@ public class CartaoServiceTests {
     void testCriar() {
         Cartao cartao = new Cartao();
         cartao.setId(1L);
-        cartao.setNome("Cartão Teste");
+        cartao.setIdentificacao("Cartão Teste");
 
         when(cartaoRepository.save(cartao)).thenReturn(cartao);
 
@@ -43,7 +43,7 @@ public class CartaoServiceTests {
 
         assertNotNull(result);
         assertEquals(cartao.getId(), result.getId());
-        assertEquals(cartao.getNome(), result.getNome());
+        assertEquals(cartao.getIdentificacao(), result.getIdentificacao());
         verify(cartaoRepository, times(1)).save(cartao);
     }
 
@@ -51,11 +51,11 @@ public class CartaoServiceTests {
     void testListarTodos() {
         Cartao cartao1 = new Cartao();
         cartao1.setId(1L);
-        cartao1.setNome("Cartão 1");
+        cartao1.setIdentificacao("Cartão 1");
 
         Cartao cartao2 = new Cartao();
         cartao2.setId(2L);
-        cartao2.setNome("Cartão 2");
+        cartao2.setIdentificacao("Cartão 2");
 
         List<Cartao> cartoes = Arrays.asList(cartao1, cartao2);
 
@@ -72,7 +72,7 @@ public class CartaoServiceTests {
     void testBuscarPorId_Encontrado() {
         Cartao cartao = new Cartao();
         cartao.setId(1L);
-        cartao.setNome("Cartão Teste");
+        cartao.setIdentificacao("Cartão Teste");
 
         when(cartaoRepository.findById(1L)).thenReturn(Optional.of(cartao));
 
@@ -80,7 +80,7 @@ public class CartaoServiceTests {
 
         assertNotNull(result);
         assertEquals(cartao.getId(), result.getId());
-        assertEquals(cartao.getNome(), result.getNome());
+        assertEquals(cartao.getIdentificacao(), result.getIdentificacao());
         verify(cartaoRepository, times(1)).findById(1L);
     }
 
