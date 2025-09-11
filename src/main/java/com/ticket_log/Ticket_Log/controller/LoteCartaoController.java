@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/lotes")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://18.217.121.166:83")
 public class LoteCartaoController {
 
     private final LoteService service;
