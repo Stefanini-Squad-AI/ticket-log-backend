@@ -1,0 +1,39 @@
+# Build artifacts
+build/
+.gradle/
+*.iml
+*.log
+*.class
+out/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.idea/
+.vscode/
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+README*
+
+# Scripts (keep gradlew files)
+*.sh
+# Don't ignore gradlew scripts
+!gradlew
+!gradlew.bat
+
+# Docker
+Dockerfile*
+.dockerignore
+
+# Other
+converter_xml2txt.py
