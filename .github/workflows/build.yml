@@ -3,13 +3,14 @@ name: TICKET-LOG-BACKEND-PIPELINE
 on:
   push:
     branches:
-      - feature/sonarQube
+      - main
+
 
 jobs:
   build_and_analyze:
     name: Build and Analyze
     runs-on: ubuntu-latest
-
+         main
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,6 +39,7 @@ jobs:
       - name: List source files
         run: ls -laR src/
 
+        main
       - name: Build Project (skip tests)
         run: ./gradlew build -x test --info
 
